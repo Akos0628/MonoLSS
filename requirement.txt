@@ -1,0 +1,6 @@
+pyyaml
+matplotlib
+opencv-python
+pillow<7
+tqdm
+numba
