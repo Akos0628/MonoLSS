@@ -4,6 +4,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 
 from lib.helpers.save_helper import load_checkpoint
+from lib.helpers.decode_helper import decode_detections
 from lib.datasets.kitti_utils import get_affine_transform
 
 class Printer(object):
@@ -47,6 +48,10 @@ class Printer(object):
         inputs = (inputs - dataset.mean) / dataset.std
         inputs = inputs.transpose(2, 0, 1)  # C * H * W
 
+        features_size = dataset.resolution // dataset.downsample
+        info = {'img_id': idx,
+                'img_size': img_size,
+                'bbox_downsample_ratio': img_size/features_size}
 
 
         torch.set_grad_enabled(False)
@@ -55,7 +60,20 @@ class Printer(object):
         calib = torch.Tensor(calib.P2).unsqueeze(0).to(self.device)
         coord_ranges = torch.Tensor(coord_range).unsqueeze(0).to(self.device)
         output = self.model(inputs, coord_ranges, calib, K=50, mode='test')
-        #print(output)
+
+        # get corresponding calibs & transform tensor to numpy
+        calibs = dataset.get_calib(idx)
+        info = {key: val.detach().cpu().numpy() for key, val in info.items()}
+        cls_mean_size = dataset.cls_mean_size
+        dets = decode_detections(dets = dets,
+                                info = info,
+                                calibs = calibs,
+                                cls_mean_size=cls_mean_size,
+                                threshold = self.cfg['threshold']
+                                )
+
+
+        print(dets)
 
         plt.axis('off')
         plt.imshow(img)
