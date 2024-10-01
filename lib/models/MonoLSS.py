@@ -130,7 +130,7 @@ class MonoLSS(nn.Module):
         else:    #extract test structure in the test (only) and the val mode
             inds,cls_ids = _topk(_nms(torch.clamp(ret['heatmap'].sigmoid(), min=1e-4, max=1 - 1e-4)), K=K)[1:3]
             # if torch.__version__ == '1.10.0+cu113':
-            if torch.__version__ in ['1.10.0+cu113', '1.10.0', '1.6.0', '1.4.0']:
+            if torch.__version__ in ['2.4.0', '1.10.0+cu113', '1.10.0', '1.6.0', '1.4.0']:
                 masks = torch.ones(inds.size()).type(torch.bool).to(device_id)
             else:
                 masks = torch.ones(inds.size()).type(torch.uint8).to(device_id)

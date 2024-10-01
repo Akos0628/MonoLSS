@@ -190,8 +190,8 @@ class KITTI(data.Dataset):
             cls_ids = np.zeros((self.max_objs), dtype=np.int64)
             indices = np.zeros((self.max_objs), dtype=np.int64)
             # if torch.__version__ == '1.10.0+cu113':
-            if torch.__version__ in ['1.10.0+cu113', '1.10.0', '1.6.0', '1.4.0']:
-                mask_2d = np.zeros((self.max_objs), dtype=np.bool)
+            if torch.__version__ in ['2.4.0', '1.10.0+cu113', '1.10.0', '1.6.0', '1.4.0']:
+                mask_2d = np.zeros((self.max_objs), dtype=bool)
             else:
                 mask_2d = np.zeros((self.max_objs), dtype=np.uint8)
             object_num = len(objects) if len(objects) < self.max_objs else self.max_objs

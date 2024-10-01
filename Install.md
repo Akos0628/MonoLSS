@@ -20,5 +20,5 @@ conda info --envs
 ```
 
 ```bash
-conda remove -n monssl --all
+conda remove -n monolss --all
 ```

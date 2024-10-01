@@ -74,11 +74,13 @@ def main():
 
     # evaluation mode
     if args.evaluate:
+        print('evaluation mode')
         tester = Tester(cfg['tester'], cfg['dataset'], model, val_loader, logger)
         tester.test()
         return
 
     if args.test:
+        print('test mode')
         tester = Tester(cfg['tester'], cfg['dataset'], model, test_loader, logger)
         tester.test()
         return
