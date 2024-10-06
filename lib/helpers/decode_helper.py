@@ -148,7 +148,7 @@ def _topk(heatmap, K=50):
     topk_scores, topk_inds = torch.topk(heatmap.view(batch, cat, -1), K)
 
     topk_inds = topk_inds % (height * width)
-    if torch.__version__ == '1.6.0':
+    if torch.__version__ in ['2.4.0', '1.6.0']:
         topk_ys = (topk_inds // width).int().float()
     else:
         topk_ys = (topk_inds / width).int().float()
@@ -157,7 +157,7 @@ def _topk(heatmap, K=50):
 
     # batch * cls_ids * 50
     topk_score, topk_ind = torch.topk(topk_scores.view(batch, -1), K)
-    if torch.__version__ == '1.6.0':
+    if torch.__version__ in ['2.4.0', '1.6.0']:
         topk_cls_ids = (topk_ind // K).int()
     else:
         topk_cls_ids = (topk_ind / K).int()
