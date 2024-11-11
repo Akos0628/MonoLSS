@@ -3,6 +3,7 @@
 
 # my data 
 /data/
+/checkpoints
 
 # output dir
 /MonoLSS/
